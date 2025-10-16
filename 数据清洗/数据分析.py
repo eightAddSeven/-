@@ -12,7 +12,7 @@ warnings.filterwarnings('ignore')
 df_train=pd.read_csv("")
 df_test=pd.read_csv("")
 
-# 分析数据
+# ==============分析数据===============
 df_train.describe()  #查看数据集里的最大值、平均值等等
 
 # 画图
@@ -23,6 +23,12 @@ plt.show()
 # 对训练集进行分割
 x_train=df_train.drop(['目标特征'],axis=1)
 y_train=df_train['目标特征']
+
+# 查看数字集列
+df_num=df_train.select_dtypes(include=['float64','int64'])
+df_num.hist(figsize=(16,20),bins=50,xlabelsize=8, ylabelsize=8)
+plt.tight_layout()  # 自动调整子图间距
+plt.show()  # python脚本中，必须使用show显式显示图形，不同于notebook
 
 # 分析某个特征与目标的关系
 data = pd.concat([df_train['SalePrice'], df_train['OverallQual']], axis=1)  #例如分析总体质量与房价的关系并画出箱子线图
@@ -37,6 +43,8 @@ data.plot.scatter(x='TotalBsmtSF', y='SalePrice')  #散点图
 corrmat = df_train.corr()
 plt.figure(figsize=(12, 12))
 sns.heatmap(corrmat, vmax=.8, square=True)  #热力图
+
+# =============处理数据===================
 
 # 数据准备：填充缺失值
 # 添加代码 添加Markdown
@@ -59,7 +67,7 @@ df_test.info()
 x_train_object=x_train.select_dtypes(include='object').columns #这个函数返回的是object的列索引
 
 
-#特征编码
+#特征编码——标签编码（带有一定的顺序性）
 from sklearn.preprocessing import LabelEncoder
 cols = x_train.select_dtypes(include='object').columns
 
@@ -70,3 +78,7 @@ for c in cols:
     df_test[c] = lbl.transform(list(df_test[c].values))
 
 print('Shape all_data: {}'.format(x_train.shape))
+
+# 当测试集中有训练集中没有的特征时需要进行对齐，否则模型报错或结果错误
+# 如果训练集的数据清洗中有删除行的行为，测试集的清洗就不能直接调用，因为测试集的行数必须完整
+
