@@ -39,12 +39,12 @@ plt.show()
 data = pd.concat([df_train['SalePrice'], df_train['TotalBsmtSF']], axis=1)
 data.plot.scatter(x='TotalBsmtSF', y='SalePrice')  #散点图
 
-#correlation matrix
+#====correlation matrix====
 corrmat = df_train.corr()
 plt.figure(figsize=(12, 12))
 sns.heatmap(corrmat, vmax=.8, square=True)  #热力图
 
-# =============处理数据===================
+# =================处理数据===================
 
 # 数据准备：填充缺失值
 # 添加代码 添加Markdown
@@ -81,4 +81,7 @@ print('Shape all_data: {}'.format(x_train.shape))
 
 # 当测试集中有训练集中没有的特征时需要进行对齐，否则模型报错或结果错误
 # 如果训练集的数据清洗中有删除行的行为，测试集的清洗就不能直接调用，因为测试集的行数必须完整
+
+# 在房价预测中我使用过的对齐代码
+# X_test = data_clean(test_raw, is_train=False, reference_columns=train_columns)  # 用训练集列对齐
 
