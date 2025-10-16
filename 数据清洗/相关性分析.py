@@ -21,11 +21,12 @@ train_location="D:/A数学建模/house-prices-advanced-regression-techniques/tra
 train=pd.read_csv(train_location)
 
 
-# ==============找到与目标关系最紧密的特征================
+# ==============找到与目标关系最紧密的特征(数值列)================
 # 假设 df 是你的训练数据，目标列为 'SalePrice'
 target = 'SalePrice'
 
 # 计算所有数值列与目标的相关系数
+# corr() 函数返回一个 pandas DataFrame，其中包含所有数值列之间的相关系数矩阵
 corr_with_target = train.corr(numeric_only=True)[target].sort_values(ascending=False)
 
 # 输出前 10 个最相关的特征
