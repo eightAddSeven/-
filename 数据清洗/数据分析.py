@@ -6,11 +6,14 @@ from scipy.stats import norm
 from sklearn.preprocessing import StandardScaler
 from scipy import stats
 import warnings
+import os
+import chardet
 warnings.filterwarnings('ignore')
 
-# 载入数据
-df_train=pd.read_csv("")
-df_test=pd.read_csv("")
+# ===========载入数据==============
+df_train=pd.read_csv('D:/A数学建模/house-prices-advanced-regression-techniques/train.csv',encoding='gbk') #载入gbk参数确保正确读取中文文件
+df_test=pd.read_csv('D:/A数学建模/house-prices-advanced-regression-techniques/test.csv',encoding='gbk')
+    
 
 # ==============分析数据===============
 df_train.describe()  #查看数据集里的最大值、平均值等等
@@ -54,11 +57,15 @@ percent = (df_train.isnull().sum()/df_train.isnull().count()).sort_values(ascend
 missing_data = pd.concat([total, percent], axis=1, keys=['Total', 'Percent'])
 missing_data.head(20) #这里展示缺失值数量最大的前20，根据题目可以改变参数
 
-# 删除某些列
+# 一、删除某些列
 x_train = x_train.drop((missing_data[missing_data['Total'] > 81]).index,axis=1) #axis=1:按列删除
-# 填充
+# 二、填充
 x_train = x_train.apply(lambda x:x.fillna(x.value_counts().index[0]))
-x_train.isnull().sum().max() # 检查是否还有缺失值
+# 三、数据插值
+x_train = x_train.interpolate() #线性插值法填充
+x_train=x_train.interpolate(method='polynomial', order=2) #多项式插值法填充
+x_train=x_train.interpolate(method='spline', order=2) #样条插值法填充
+x_train=x_train.interpolate(method='time') #时间序列法填充
 
 # 处理测试集中的缺失值 - 不能删除行
 df_test.info()
