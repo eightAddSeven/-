@@ -28,7 +28,7 @@ random_search = RandomizedSearchCV(
     n_iter=50,  # 随机搜索的迭代次数
     cv=5,
     scoring='accuracy',
-    n_jobs=-1,
+    n_jobs=1,
     random_state=42,
     verbose=1
 )
