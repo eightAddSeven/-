@@ -1,0 +1,6 @@
+; TestLineManagement.def : Declares the module parameters for the DLL.
+
+LIBRARY      "TestLineManagement"
+
+EXPORTS
+    ; Explicit exports can go here
